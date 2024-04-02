@@ -1,13 +1,7 @@
 ﻿using Application;
 using Domain.Models;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Text.Json;
 
 namespace MessengerServer.Controllers
 {
@@ -22,58 +16,36 @@ namespace MessengerServer.Controllers
 
         [Authorize]
         [HttpPost, Route("add")]
-        public User AddUser(User user)
+        public IResult AddUser(User user)
         {
-            return userService.AddUser(user);
+            return Results.Ok(userService.AddUser(user));
         }
 
 
         [Authorize]
-        [HttpPost, Route("delete")]
-        public User DeleteUser(User user)
+        [HttpDelete, Route("delete")]
+        public IResult DeleteUser(User user)
         {
-            return userService.DeleteUser(user);
+            return Results.Ok(userService.DeleteUser(user));
         }
 
         [Authorize]
         [HttpPost, Route("update")]
-        public User UpdateUser(User user)
+        public IResult UpdateUser(User user)
         {
-            return userService.UpdateUser(user);
+            return Results.Ok(userService.UpdateUser(user));
         }
 
         [HttpGet, Route("get/{login}/{password}")]
         public IResult GetUser(string login, string password)
         {
             var user = userService.GetUser(login, password);
-            if (user == null) 
+            if (string.IsNullOrEmpty(user)) 
             {
                 return Results.Unauthorized();
             }
-
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, JsonSerializer.Serialize(user)) };
-            var jwt = new JwtSecurityToken(issuer: AuthOptions.ISSUER,
-                                           audience: AuthOptions.AUDIENCE,
-                                           claims: claims,
-                                           expires: DateTime.UtcNow.Add(TimeSpan.FromHours(10)),
-                                           signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-
-            var result = new
-            {
-                accessToken = new JwtSecurityTokenHandler().WriteToken(jwt),
-                userObject = user
-            };
-
-            return Results.Json(result);
+            HttpContext.Response.Cookies.Append(Consts.CookieName, user);
+            return Results.Ok(user);
         }
-    }
-
-    public class AuthOptions
-    {
-        public const string ISSUER = "MyAuthServer"; // издатель токена
-        public const string AUDIENCE = "MyAuthClient"; // потребитель токена
-        const string KEY = "mysupersecret_secretsecretsecretkey!123";   // ключ для шифрации
-        public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
     }
 }

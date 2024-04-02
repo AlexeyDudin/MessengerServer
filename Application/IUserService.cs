@@ -7,6 +7,6 @@ namespace Application
         User AddUser(User user);
         User UpdateUser(User user);
         User DeleteUser(User user);
-        User GetUser(string login, string password);
+        string GetUser(string login, string password);
     }
 }
