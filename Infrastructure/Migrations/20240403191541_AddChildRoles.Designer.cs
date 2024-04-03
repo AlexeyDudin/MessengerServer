@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Foundation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,38 +11,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240403191541_AddChildRoles")]
+    partial class AddChildRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.28");
-
-            modelBuilder.Entity("Domain.Models.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<long>("FromUserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<long?>("ToGroupId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<long?>("ToUserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FromUserId");
-
-                    b.HasIndex("ToGroupId");
-
-                    b.HasIndex("ToUserId");
-
-                    b.ToTable("Messages", (string)null);
-                });
 
             modelBuilder.Entity("Domain.Models.Role", b =>
                 {
@@ -101,33 +77,10 @@ namespace Infrastructure.Migrations
                     b.ToTable("UsersRoles");
                 });
 
-            modelBuilder.Entity("Domain.Models.Message", b =>
-                {
-                    b.HasOne("Domain.Models.User", "From")
-                        .WithMany("OutputMessages")
-                        .HasForeignKey("FromUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.Role", "ToGroup")
-                        .WithMany("Messages")
-                        .HasForeignKey("ToGroupId");
-
-                    b.HasOne("Domain.Models.User", "ToUser")
-                        .WithMany("InputMessages")
-                        .HasForeignKey("ToUserId");
-
-                    b.Navigation("From");
-
-                    b.Navigation("ToGroup");
-
-                    b.Navigation("ToUser");
-                });
-
             modelBuilder.Entity("Domain.Models.Role", b =>
                 {
                     b.HasOne("Domain.Models.Role", "Parent")
-                        .WithMany("Children")
+                        .WithMany("Child")
                         .HasForeignKey("ParentId");
 
                     b.Navigation("Parent");
@@ -150,16 +103,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Role", b =>
                 {
-                    b.Navigation("Children");
-
-                    b.Navigation("Messages");
-                });
-
-            modelBuilder.Entity("Domain.Models.User", b =>
-                {
-                    b.Navigation("InputMessages");
-
-                    b.Navigation("OutputMessages");
+                    b.Navigation("Child");
                 });
 #pragma warning restore 612, 618
         }

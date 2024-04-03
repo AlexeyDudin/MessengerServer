@@ -22,7 +22,14 @@ namespace MessengerServer.Controllers
         [HttpPost, Route("add")]
         public IResult AddUser(UserDto user)
         {
-            return Results.Ok(userService.AddUser(user.ToUser(roleService.GetRoles())));
+            try
+            {
+                return Results.Ok(userService.AddUser(user.ToUser(roleService.GetRoles())).ToUserDto());
+            }
+            catch (Exception ex)
+            {
+                return Results.BadRequest(ex);
+            }
         }
 
 
@@ -30,46 +37,81 @@ namespace MessengerServer.Controllers
         [HttpDelete, Route("delete")]
         public IResult DeleteUser(UserDto user)
         {
-            return Results.Ok(userService.DeleteUser(user.ToUser(roleService.GetRoles())).ToUserDto());
+            try
+            {
+                return Results.Ok(userService.DeleteUser(user.ToUser(roleService.GetRoles())).ToUserDto());
+            }
+            catch (Exception ex)
+            {
+                return Results.BadRequest(ex);
+            }
         }
 
         [Authorize]
         [HttpPost, Route("update")]
         public IResult UpdateUser(UserDto user)
         {
-            return Results.Ok(userService.UpdateUser(user.ToUser(roleService.GetRoles())).ToUserDto());
+            try
+            {
+                return Results.Ok(userService.UpdateUser(user.ToUser(roleService.GetRoles())).ToUserDto());
+            }
+            catch (Exception ex)
+            {
+                return Results.BadRequest(ex);
+            }
         }
 
         [HttpGet, Route("get/{login}/{password}")]
         public IResult GetUser(string login, string password)
         {
-            var token = userService.AuthorizeUser(login, password);
-            if (string.IsNullOrEmpty(token)) 
+            try
             {
-                return Results.Unauthorized();
+                var token = userService.AuthorizeUser(login, password);
+                if (string.IsNullOrEmpty(token))
+                {
+                    return Results.Unauthorized();
+                }
+                HttpContext.Response.Cookies.Append(Consts.CookieName, token);
+                return Results.Ok(token);
             }
-            HttpContext.Response.Cookies.Append(Consts.CookieName, token);
-            return Results.Ok(token);
+            catch (Exception ex)
+            {
+                return Results.BadRequest(ex);
+            }
         }
 
         [Authorize]
         [HttpGet, Route("get/{login}")]
         public IResult GetUserInfo(string login)
         {
-            var user = userService.GetUser(login);
-            if (user == null)
+            try
             {
-                Results.BadRequest($"Пользователя с логином {login} не существует");
+                var user = userService.GetUser(login);
+                if (user == null)
+                {
+                    Results.BadRequest($"Пользователя с логином {login} не существует");
+                }
+                return Results.Ok(user.ToUserDto());
             }
-            return Results.Ok(user.ToUserDto());
+            catch (Exception ex)
+            {
+                return Results.BadRequest(ex);
+            }
         }
 
         [Authorize]
         [HttpGet]
         public IResult GetAll()
         {
-            var user = userService.GetAll();
-            return Results.Ok(user.ToUsersDto());
+            try
+            {
+                var user = userService.GetAll();
+                return Results.Ok(user.ToUsersDto());
+            }
+            catch (Exception ex)
+            {
+                return Results.BadRequest(ex);
+            }
         }
     }
 }

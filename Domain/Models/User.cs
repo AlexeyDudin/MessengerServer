@@ -8,6 +8,8 @@ namespace Domain.Models
     public class User
     {
         private List<Role> _roles = new();
+        private List<Message> _outputMessages = new ();
+        private List<Message> _inputMessages = new ();
 
         [Key]
         public long Id { get; set; }
@@ -30,6 +32,16 @@ namespace Domain.Models
         }
 
         private ILazyLoader LazyLoader { get; set; }
+        public virtual List<Message> OutputMessages 
+        {
+            get => LazyLoader.Load(this, ref _outputMessages);
+            set => _outputMessages = value; 
+        }
+        public virtual List<Message> InputMessages 
+        { 
+            get => LazyLoader.Load(this, ref _inputMessages); 
+            set => _inputMessages = value; 
+        }
 
         public void ChangeFields(User newUser)
         {

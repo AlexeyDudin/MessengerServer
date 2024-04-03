@@ -7,7 +7,9 @@ namespace Domain.Models
     [Table("Roles")]
     public class Role
     {
+        private List<Role> children = new ();
         private List<User> _users = new ();
+        private List<Message> messages = new ();
         private ILazyLoader LazyLoader { get; set; }
         public Role() { }
 
@@ -22,6 +24,18 @@ namespace Domain.Models
         { 
             get => LazyLoader.Load(this, ref _users); 
             set => _users = value;
+        }
+        public long? ParentId { get; set; }
+        public Role? Parent { get; set; }
+        public virtual List<Role> Children
+        { 
+            get => LazyLoader.Load(this, ref children);
+            set => children = value; 
+        }
+        public virtual List<Message> Messages 
+        { 
+            get => LazyLoader.Load(this, ref messages);
+            set => messages = value; 
         }
     }
 }

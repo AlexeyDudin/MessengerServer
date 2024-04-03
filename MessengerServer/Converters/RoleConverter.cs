@@ -5,11 +5,17 @@ namespace MessengerServer.Converters
 {
     public static class RoleConverter
     {
-        public static Role ToRole(this RoleDto roleDto)
+        public static Role ToRole(this RoleDto roleDto, List<Role> roles)
         {
+            Role? parentInDb = null;
+            if (!string.IsNullOrEmpty(roleDto.Parent))
+            {
+                parentInDb = roles.FirstOrDefault(r => r.Name == roleDto.Parent);
+            }
             return new Role()
             {
                 Name = roleDto.Name,
+                Parent = parentInDb
             };
         }
 
@@ -20,10 +26,22 @@ namespace MessengerServer.Converters
             {
                 users.Add(user.Login);
             }
+            var parent = "";
+            if (role.Parent != null)
+            {
+                parent = role.Parent.Name;
+            }
+            var childs = new List<RoleDto>();
+            foreach (var child in role.Children)
+            {
+                childs.Add(child.ToRoleDto());
+            }
             return new RoleDto()
             {
                 Name = role.Name,
-                Users = users
+                Users = users,
+                Parent = parent,
+                Child = childs
             };
         }
 

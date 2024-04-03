@@ -20,14 +20,42 @@ namespace MessengerServer.Controllers
         [HttpPost, Route("add")]
         public IResult AddRole(RoleDto role)
         {
-            return Results.Ok(roleService.AddRole(role.ToRole()));
+            try
+            {
+                return Results.Ok(roleService.AddRole(role.ToRole(roleService.GetRoles())).ToRoleDto());
+            }
+            catch (Exception ex) 
+            {
+                return Results.BadRequest(ex);
+            }
         }
 
         [Authorize]
         [HttpGet]
         public IResult GetRoles()
         {
-            return Results.Ok(roleService.GetRoles().ToRoleDtoList());
+            try
+            {
+                return Results.Ok(roleService.GetRoles().ToRoleDtoList());
+            }
+            catch (Exception ex)
+            {
+                return Results.BadRequest(ex);
+            }
+        }
+
+        [Authorize]
+        [HttpPost, Route("update")]
+        public IResult UpdateRole(RoleDto role)
+        {
+            try
+            {
+                return Results.Ok(roleService.UpdateRole(role.ToRole(roleService.GetRoles())).ToRoleDto());
+            }
+            catch (Exception ex)
+            {
+                return Results.BadRequest(ex);
+            }
         }
     }
 }

@@ -38,6 +38,7 @@ namespace Application.RoleServices
             }
             roleInDb.Name = role.Name;
             roleInDb.Users = role.Users;
+            roleInDb.Parent = role.Parent;
             unitOfWork.Commit();
             return roleInDb;
         }
