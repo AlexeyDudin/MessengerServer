@@ -14,9 +14,11 @@ namespace Infrastructure.Foundation
         private ApplicationContext _dbContext;
         private IRepository<User> _userRepository;
         private IRepository<Role> _roleRepository;
+        private IRepository<Message> _messageRepository;
 
         public IRepository<User> UserRepository { get => _userRepository; }
         public IRepository<Role> RoleRepository { get => _roleRepository; }
+        public IRepository<Message> MessageRepository { get => _messageRepository; }
 
         public UnitOfWork(ApplicationContext dbContext)
         {
@@ -27,6 +29,7 @@ namespace Infrastructure.Foundation
             var roleRepo = new Repository<Role>(dbContext);
             roleRepo.Entities.Include(r => r.Users);
             _roleRepository = roleRepo;
+            _messageRepository = new Repository<Message>(dbContext);
         }
 
         public void Commit()

@@ -6,6 +6,7 @@ namespace Domain.Foundation
     {
         public IRepository<User> UserRepository { get; }
         public IRepository<Role> RoleRepository { get; }
+        public IRepository<Message> MessageRepository { get; }
 
         public void Commit();
     }
