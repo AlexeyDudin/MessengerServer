@@ -1,8 +1,9 @@
-﻿using Domain.Foundation;
+﻿using Application.UserServices.UserService;
+using Domain.Foundation;
 using Domain.Models;
 using Infrastructure.Providers;
 
-namespace Application
+namespace Application.UserService
 {
     public class UserService : IUserService
     {
@@ -28,10 +29,10 @@ namespace Application
             return user;
         }
 
-        public string GetUser(string login, string password)
+        public string AuthorizeUser(string login, string password)
         {
             var findUser = unitOfWork.UserRepository.FirstOrDefault(u => u.Login == login && u.Password == password);
-            if (findUser == null) 
+            if (findUser == null)
             {
                 throw new Exception("Пользователь не найден");
             }
@@ -47,8 +48,19 @@ namespace Application
                 throw new Exception("Пользователь не найден");
             }
             findUser.ChangeFields(user);
+            findUser.ChangeRoles(user.Roles, unitOfWork.RoleRepository.GetAll());
             unitOfWork.Commit();
             return findUser;
+        }
+
+        public User? GetUser(string login)
+        {
+            return unitOfWork.UserRepository.Where(u => u.Login == login).FirstOrDefault();
+        }
+
+        public List<User> GetAll()
+        {
+            return unitOfWork.UserRepository.GetAll();
         }
     }
 }

@@ -12,6 +12,7 @@ namespace Infrastructure.Foundation
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new UserConfiguration());
+            builder.ApplyConfiguration(new RoleConfiguration());
         }
     }
 }

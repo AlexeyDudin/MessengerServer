@@ -7,7 +7,7 @@ namespace Infrastructure.Foundation
     public class Repository<T> : IRepository<T> where T : class
     {
         protected readonly DbContext DbContext;
-        protected DbSet<T> Entities => DbContext.Set<T>();
+        public DbSet<T> Entities => DbContext.Set<T>();
 
         public Repository(DbContext dbContext)
         {

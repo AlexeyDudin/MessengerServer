@@ -1,4 +1,6 @@
-using Application;
+using Application.RoleServices;
+using Application.UserService;
+using Application.UserServices.UserService;
 using Domain.Foundation;
 using Domain.JwtModels;
 using Infrastructure.Foundation;
@@ -20,6 +22,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
