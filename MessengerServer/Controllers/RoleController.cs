@@ -36,7 +36,7 @@ namespace MessengerServer.Controllers
         {
             try
             {
-                return Results.Ok(roleService.GetRoles().ToRoleDtoList());
+                return Results.Ok(roleService.GetRoleTree().ToRoleDtoList());
             }
             catch (Exception ex)
             {

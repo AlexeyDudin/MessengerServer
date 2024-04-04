@@ -29,6 +29,11 @@ namespace Application.RoleServices
             return unitOfWork.RoleRepository.GetAll();
         }
 
+        public List<Role> GetRoleTree()
+        {
+            return unitOfWork.RoleRepository.Where(r => r.Parent == null);
+        }
+
         public Role UpdateRole(Role role)
         {
             var roleInDb = unitOfWork.RoleRepository.Where(r => r.Name == role.Name).FirstOrDefault();
