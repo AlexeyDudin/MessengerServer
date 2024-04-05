@@ -16,6 +16,7 @@ namespace Domain.Models
         public string Login { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
+        public UserState State { get; set; } = UserState.Offline;
         public virtual List<Role> Roles
         {
             get => LazyLoader.Load(this, ref _roles);

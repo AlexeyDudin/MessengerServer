@@ -1,5 +1,4 @@
 ﻿using Application.RoleServices;
-using Application.UserServices.UserService;
 using MessengerServer.Converters;
 using MessengerServer.Models;
 using Microsoft.AspNetCore.Authorization;

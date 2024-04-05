@@ -20,7 +20,7 @@ namespace MessengerServer.Controllers
 
         [Authorize]
         [HttpPost, Route("add")]
-        public IResult AddUser(UserDto user)
+        public IResult AddUser([FromBody] UserDto user)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace MessengerServer.Controllers
 
         [Authorize]
         [HttpDelete, Route("delete")]
-        public IResult DeleteUser(UserDto user)
+        public IResult DeleteUser([FromBody] UserDto user)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace MessengerServer.Controllers
 
         [Authorize]
         [HttpPost, Route("update")]
-        public IResult UpdateUser(UserDto user)
+        public IResult UpdateUser([FromBody] UserDto user)
         {
             try
             {

@@ -62,5 +62,24 @@ namespace Application.UserService
         {
             return unitOfWork.UserRepository.GetAll();
         }
+
+        public User? SetUserState(string login, UserState state)
+        {
+            var userInDb = unitOfWork.UserRepository.Where(u => u.Login == login).FirstOrDefault();
+            if (userInDb != null)
+            {
+                userInDb.State = state;
+                unitOfWork.Commit();
+            }
+            return userInDb;
+        }
+
+        public List<Role> GetRolesBy(string login)
+        {
+            var userInDb = unitOfWork.UserRepository.Where(u => u.Login == login).FirstOrDefault();
+            if (userInDb == null)
+                return new List<Role>();
+            return userInDb.Roles;
+        }
     }
 }

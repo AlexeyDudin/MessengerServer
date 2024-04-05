@@ -10,5 +10,17 @@
         public User? ToUser { get; set; }
         public long? ToGroupId { get; set; }
         public Role? ToGroup { get; set; }
+        public DateTime TimeStamp { get; set; }
+        public string Text { get; set; } = string.Empty;
+        public string UniqueId { get; set; } = string.Empty;
+
+        public void ChangeValues(Message newValues)
+        {
+            From = newValues.From;
+            ToUser = newValues.ToUser;
+            ToGroup = newValues.ToGroup;
+            Text = newValues.Text;
+            TimeStamp = newValues.TimeStamp;
+        }
     }
 }

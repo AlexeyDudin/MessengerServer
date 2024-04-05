@@ -8,12 +8,15 @@ namespace MessengerServer.Converters
         public static User ToUser(this UserDto userDto, List<Role> roleList)
         {
             var userRoles = new List<Role>();
-            foreach (var role in userDto.Roles)
+            if (userDto.Roles != null)
             {
-                var foundedRole = roleList.Where(r => r.Name == role).FirstOrDefault();
-                if (foundedRole != null)
+                foreach (var role in userDto.Roles)
                 {
-                    userRoles.Add(foundedRole);
+                    var foundedRole = roleList.Where(r => r.Name == role).FirstOrDefault();
+                    if (foundedRole != null)
+                    {
+                        userRoles.Add(foundedRole);
+                    }
                 }
             }
 
@@ -29,9 +32,12 @@ namespace MessengerServer.Converters
         public static UserDto ToUserDto(this User user)
         {
             var roles = new List<string>();
-            foreach (var role in user.Roles)
+            if (user.Roles != null)
             {
-                roles.Add(role.Name);
+                foreach (var role in user.Roles)
+                {
+                    roles.Add(role.Name);
+                }
             }
             return new UserDto()
             {
