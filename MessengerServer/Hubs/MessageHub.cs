@@ -21,20 +21,14 @@ namespace MessengerServer.Hubs
         }
         public async Task SendMessage(MessageDto message)
         {
-            await Task.Run(() => messageService.SendMessage(message.ToMessage(userService.GetAll(), roleService.GetRoles())));
+            await Task.Run(() => messageService.AddMessage(message.ToMessage(userService.GetAll(), roleService.GetRoles())));
             await Clients.All.SendAsync("RecieveMessage", message);
         }
 
-        public override async Task OnConnectedAsync()
+        public async Task EditMessage(MessageDto message)
         {
-            await Clients.All.SendAsync("Notify", $"{Context.ConnectionId} вошел в чат");
-            //userService.AuthorizeUser(Context.)
-            await base.OnConnectedAsync();
-        }
-        public override async Task OnDisconnectedAsync(Exception? exception)
-        {
-            await Clients.All.SendAsync("Notify", $"{Context.ConnectionId} покинул в чат");
-            await base.OnDisconnectedAsync(exception);
+            await Task.Run(() => messageService.EditMessage(message.ToMessage(userService.GetAll(), roleService.GetRoles())));
+            await Clients.All.SendAsync("EditMessage", message);
         }
     }
 }

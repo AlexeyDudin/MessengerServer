@@ -16,6 +16,7 @@ namespace Domain.Models
         public string Login { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
+        public string UniqueId { get; set; } = Guid.NewGuid().ToString();
         public UserState State { get; set; } = UserState.Offline;
         public virtual List<Role> Roles
         {

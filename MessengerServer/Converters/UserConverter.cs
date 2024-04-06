@@ -25,7 +25,8 @@ namespace MessengerServer.Converters
                 Login = userDto.Login,
                 Password = userDto.Password,
                 FullName = userDto.FullName,
-                Roles = userRoles
+                Roles = userRoles,
+                UniqueId = userDto.UniqueId.ToString()
             };
         }
 
@@ -39,12 +40,18 @@ namespace MessengerServer.Converters
                     roles.Add(role.Name);
                 }
             }
+            Guid userGuid = Guid.NewGuid();
+            if (!string.IsNullOrEmpty(user.UniqueId))
+            {
+                userGuid = Guid.Parse(user.UniqueId);
+            }
             return new UserDto()
             {
                 FullName = user.FullName,
                 Login = user.Login,
                 Password = user.Password,
-                Roles = roles
+                Roles = roles,
+                UniqueId = userGuid
             };
         }
 

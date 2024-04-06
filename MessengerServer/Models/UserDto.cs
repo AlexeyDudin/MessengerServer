@@ -9,5 +9,6 @@ namespace MessengerServer.Models
         public string FullName { get; set; }
         public List<string> Roles { get; set; }
         public UserState State { get; set; }
+        public Guid UniqueId { get; set; }
     }
 }

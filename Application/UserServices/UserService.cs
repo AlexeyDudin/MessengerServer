@@ -25,7 +25,11 @@ namespace Application.UserService
 
         public User DeleteUser(User user)
         {
-            unitOfWork.UserRepository.Delete(user);
+            var foundedUserInDb = unitOfWork.UserRepository.Where(u => u.UniqueId == user.UniqueId).FirstOrDefault();
+            if (foundedUserInDb != null)
+            {
+                unitOfWork.UserRepository.Delete(foundedUserInDb);
+            }
             return user;
         }
 
@@ -42,7 +46,7 @@ namespace Application.UserService
 
         public User UpdateUser(User user)
         {
-            var findUser = unitOfWork.UserRepository.FirstOrDefault(u => u.Login == user.Login);
+            var findUser = unitOfWork.UserRepository.FirstOrDefault(u => u.UniqueId == user.UniqueId);
             if (findUser == null)
             {
                 throw new Exception("Пользователь не найден");

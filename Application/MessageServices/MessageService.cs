@@ -45,7 +45,7 @@ namespace Application.MessageServices
             return result;
         }
 
-        public Message SendMessage(Message message)
+        public Message AddMessage(Message message)
         {
             unitOfWork.MessageRepository.Add(message);
             unitOfWork.Commit();
