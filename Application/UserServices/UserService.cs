@@ -67,12 +67,18 @@ namespace Application.UserService
             return unitOfWork.UserRepository.GetAll();
         }
 
-        public User? SetUserState(string login, UserState state)
+        public User? SetUserState(string login, string connectionId, UserState state)
         {
             var userInDb = unitOfWork.UserRepository.Where(u => u.Login == login).FirstOrDefault();
             if (userInDb != null)
             {
                 userInDb.State = state;
+                if (state == UserState.Offline)
+                    userInDb.ConnectionId = string.Empty;
+                else
+                {
+                    userInDb.ConnectionId = connectionId;
+                }
                 unitOfWork.Commit();
             }
             return userInDb;
@@ -84,6 +90,11 @@ namespace Application.UserService
             if (userInDb == null)
                 return new List<Role>();
             return userInDb.Roles;
+        }
+
+        public User? GetUserByConnectionId(string connectionId)
+        {
+            return unitOfWork.UserRepository.Where(u => u.ConnectionId == connectionId).FirstOrDefault();
         }
     }
 }

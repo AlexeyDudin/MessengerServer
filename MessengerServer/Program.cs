@@ -64,5 +64,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapHub<MessageHub>("/messages");
+app.MapHub<UserHub>("/user");
 
 app.Run();

@@ -51,6 +51,7 @@ namespace MessengerServer.Converters
                 Login = user.Login,
                 Password = user.Password,
                 Roles = roles,
+                State= user.State,
                 UniqueId = userGuid
             };
         }

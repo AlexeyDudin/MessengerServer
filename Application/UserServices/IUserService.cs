@@ -10,7 +10,8 @@ namespace Application.UserServices.UserService
         string AuthorizeUser(string login, string password);
         User? GetUser(string login);
         List<User> GetAll();
-        User? SetUserState(string login, UserState state);
+        User? SetUserState(string login, string connectionId, UserState state);
         List<Role> GetRolesBy(string userName);
+        User? GetUserByConnectionId(string connectionId);
     }
 }

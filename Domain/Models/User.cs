@@ -18,6 +18,7 @@ namespace Domain.Models
         public string FullName { get; set; } = string.Empty;
         public string UniqueId { get; set; } = Guid.NewGuid().ToString();
         public UserState State { get; set; } = UserState.Offline;
+        public string ConnectionId { get; set; } = string.Empty;
         public virtual List<Role> Roles
         {
             get => LazyLoader.Load(this, ref _roles);
