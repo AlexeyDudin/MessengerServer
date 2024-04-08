@@ -34,7 +34,7 @@ namespace MessengerServer.Controllers
 
 
         [Authorize]
-        [HttpDelete, Route("delete")]
+        [HttpPost, Route("delete")]
         public IResult DeleteUser([FromBody] UserDto user)
         {
             try

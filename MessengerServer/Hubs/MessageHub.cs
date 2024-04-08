@@ -19,16 +19,22 @@ namespace MessengerServer.Hubs
             this.userService = userService;
             this.roleService = roleService;
         }
-        public async Task SendMessage(MessageDto message)
+        public async Task Add(MessageDto message)
         {
             await Task.Run(() => messageService.AddMessage(message.ToMessage(userService.GetAll(), roleService.GetRoles())));
-            await Clients.All.SendAsync("RecieveMessage", message);
+            await Clients.Others.SendAsync("RecieveMessage", message);
         }
 
-        public async Task EditMessage(MessageDto message)
+        public async Task Edit(MessageDto message)
         {
             await Task.Run(() => messageService.EditMessage(message.ToMessage(userService.GetAll(), roleService.GetRoles())));
-            await Clients.All.SendAsync("EditMessage", message);
+            await Clients.Others.SendAsync("EditMessage", message);
+        }
+
+        public async Task Delete(MessageDto message)
+        {
+            await Task.Run(() => messageService.DeleteMessage(message.ToMessage(userService.GetAll(), roleService.GetRoles())));
+            await Clients.Others.SendAsync("DeleteMessage", message);
         }
     }
 }

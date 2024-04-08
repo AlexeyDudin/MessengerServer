@@ -20,5 +20,6 @@ namespace MessengerServer.Controllers
         {
             return Results.Ok(messageService.GetAllMessagesBy(userLogin).ToMessageDtoList());
         }
+
     }
 }
